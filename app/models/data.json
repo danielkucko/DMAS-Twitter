@@ -1,0 +1,69 @@
+{
+  "users": {
+    "_model": "User",
+    "first": {
+      "firstName": "Homer",
+      "lastName": "Simpson",
+      "email": "homer@simpson.com",
+      "password": "secret"
+    },
+    "second": {
+      "firstName": "Marge",
+      "lastName": "Simpson",
+      "email": "marge@simpson.com",
+      "password": "secret"
+    },
+    "third": {
+      "firstName": "Bart",
+      "lastName": "Simpson",
+      "email": "bart@simpson.com",
+      "password": "secret"
+    }
+  },
+  "comments": {
+    "_model": "Comment",
+    "first": {
+      "author": "->users.third",
+
+      "date": 1478443807,
+      "content": "Can you think about anything else than food?"
+    },
+    "second": {
+      "author": "->users.first",
+
+      "date": 1478453807,
+      "content": "Well beer is pretty awesome too."
+    },
+    "third": {
+      "author": "->users.first",
+      "date": 1478627412,
+      "content": "Good one!"
+    },
+    "fourth": {
+      "author": "->users.third",
+      "date": 1478637412,
+      "content": "Can't you just go back to your pretzels?"
+    }
+  },
+  "tweets": {
+    "_model": "Tweet",
+    "first": {
+      "author": "->users.first",
+      "date": 1478423807,
+      "content": "Pretzels are awesome!",
+      "comments": ["->comments.first", "->comments.second"]
+    },
+    "second": {
+      "author": "->users.second",
+      "date": 1478683007,
+      "content": "My First Tweet!",
+      "comments": []
+    },
+    "third": {
+      "author": "->users.third",
+      "date": 1478607412,
+      "content": "I will not post dumb stuff on here!",
+      "comments": ["->comments.third", "->comments.fourth"]
+    }
+  }
+}
