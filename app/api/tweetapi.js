@@ -27,6 +27,16 @@ exports.findOne = {
   },
 };
 
+exports.findByUser = {
+  handler: function (request, reply) {
+    Tweet.find({author: request.params.id}).then(tweets => {
+      reply(tweets);
+    }).catch(err => {
+      reply(Boom.badImplementation('Error accessing the database'));
+    });
+  },
+};
+
 exports.create = {
   handler: function (request, reply) {
     const tweet = new Tweet(request.payload);
@@ -57,3 +67,13 @@ exports.deleteOne = {
     });
   },
 };
+
+exports.deleteByUser = {
+  handler: function (request, reply) {
+    Tweet.remove({author: request.params.id}).then(tweets => {
+      reply().code(204);
+    }).catch(err => {
+      reply(Boom.badImplementation('Error removing tweets.'));
+    })
+  }
+}

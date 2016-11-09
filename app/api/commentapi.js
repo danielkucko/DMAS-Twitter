@@ -27,9 +27,30 @@ exports.findOne = {
   },
 };
 
+exports.findByUser = {
+  handler: function (request, reply) {
+    Comment.find({author: request.params.id}).then(comments => {
+      reply(comments);
+    }).catch(err => {
+      reply(Boom.badImplementation('Error accessing database'));
+    });
+  },
+};
+
+exports.findByTweet = {
+  handler: function (request, reply) {
+    Comment.find({tweet: request.params.id}).then(comments => {
+      reply(comments);
+    }).catch(err => {
+      reply(Boom.badImplementation('Error accessing database'));
+    });
+  },
+};
+
 exports.create = {
   handler: function (request, reply) {
     const comment = new Comment(request.payload);
+    comment.tweet = request.params.id;
     comment.save().then(comment => {
       reply(comment).code(201);
     }).catch(err => {
@@ -54,6 +75,26 @@ exports.deleteOne = {
       reply(comment).code(204);
     }).catch(err => {
       reply(Boom.notFound('No comment with this id was found.'));
+    });
+  },
+};
+
+exports.deleteByUser = {
+  handler: function (request, reply) {
+    Comment.remove({author: request.params.id}).then(comments => {
+      reply().code(204);
+    }).catch(err => {
+      reply(Boom.notFound('Error removing comments.'));
+    });
+  },
+};
+
+exports.deleteByTweet = {
+  handler: function (request, reply) {
+    Comment.remove({tweet: request.params.id}).then(comments => {
+      reply().code(204);
+    }).catch(err => {
+      reply(Boom.notFound('Error removing comments.'));
     });
   },
 };
