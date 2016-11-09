@@ -20,50 +20,49 @@
       "password": "secret"
     }
   },
-  "comments": {
-    "_model": "Comment",
-    "first": {
-      "author": "->users.third",
-
-      "date": 1478443807,
-      "content": "Can you think about anything else than food?"
-    },
-    "second": {
-      "author": "->users.first",
-
-      "date": 1478453807,
-      "content": "Well beer is pretty awesome too."
-    },
-    "third": {
-      "author": "->users.first",
-      "date": 1478627412,
-      "content": "Good one!"
-    },
-    "fourth": {
-      "author": "->users.third",
-      "date": 1478637412,
-      "content": "Can't you just go back to your pretzels?"
-    }
-  },
   "tweets": {
     "_model": "Tweet",
     "first": {
       "author": "->users.first",
-      "date": 1478423807,
-      "content": "Pretzels are awesome!",
-      "comments": ["->comments.first", "->comments.second"]
+      "date": 1478423807000,
+      "content": "Pretzels are awesome!"
     },
     "second": {
       "author": "->users.second",
-      "date": 1478683007,
-      "content": "My First Tweet!",
-      "comments": []
+      "date": 1478683007000,
+      "content": "My First Tweet!"
     },
     "third": {
       "author": "->users.third",
       "date": 1478607412,
-      "content": "I will not post dumb stuff on here!",
-      "comments": ["->comments.third", "->comments.fourth"]
+      "content": "I will not post dumb stuff on here!"
+    }
+  },
+  "comments": {
+    "_model": "Comment",
+    "first": {
+      "author": "->users.third",
+      "tweet": "->tweets.first",
+      "date": 1478443807000,
+      "content": "Can you think about anything else than food?"
+    },
+    "second": {
+      "author": "->users.first",
+      "tweet": "->tweets.first",
+      "date": 1478453807000,
+      "content": "Well beer is pretty awesome too."
+    },
+    "third": {
+      "author": "->users.first",
+      "tweet": "->tweets.third",
+      "date": 1478627412000,
+      "content": "Good one!"
+    },
+    "fourth": {
+      "author": "->users.third",
+      "tweet": "->tweets.third",
+      "date": 1478637412000,
+      "content": "Can't you just go back to your pretzels?"
     }
   }
 }
