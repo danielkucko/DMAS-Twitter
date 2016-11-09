@@ -6,7 +6,6 @@ const userSchema = mongoose.Schema({
   firstName: String,
   lastNae: String,
   email: String,
-  tweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' }],
   password: String,
 });
 
