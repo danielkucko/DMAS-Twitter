@@ -50,7 +50,8 @@ exports.findByTweet = {
 exports.create = {
   handler: function (request, reply) {
     const comment = new Comment(request.payload);
-    comment.tweet = request.params.id;
+    comment.tweet = request.params.tid;
+    comment.author = request.params.uid;
     comment.save().then(comment => {
       reply(comment).code(201);
     }).catch(err => {

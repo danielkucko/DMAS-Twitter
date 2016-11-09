@@ -40,6 +40,7 @@ exports.findByUser = {
 exports.create = {
   handler: function (request, reply) {
     const tweet = new Tweet(request.payload);
+    tweet.author = request.params.id;
     tweet.save().then(tweet => {
       reply(tweet).code(201);
     }).catch(err => {
