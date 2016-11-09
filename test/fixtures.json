@@ -1,0 +1,56 @@
+{
+  "twitterService": "http://localhost:4000",
+  "users": [
+    {
+      "firstName": "Homer",
+      "lastName": "Simpson",
+      "email": "homer@simpson.com",
+      "password": "secret"
+    },
+    {
+      "firstName": "Marge",
+      "lastName": "Simpson",
+      "email": "marge@simpson.com",
+      "password": "secret"
+    },
+    {
+      "firstName": "Bart",
+      "lastName": "Simpson",
+      "email": "bart@simpson.com",
+      "password": "secret"
+    }
+  ],
+  "tweets": [
+    {
+      "content": "Test"
+    },
+    {
+      "content": "TestTwo"
+    }
+  ],
+  "comments": [
+    {
+      "content": "TestComment"
+    },
+    {
+      "content": "TestCommentTwo"
+    },
+    {
+      "content": "TestCommentThree"
+    }
+  ],
+  "newTweet": {
+    "content": "newTweet",
+    "date": "2016-11-08T17:50:12.000Z"
+  },
+  "newUser": {
+    "firstName": "Maggie",
+    "lastName": "Simpson",
+    "email": "maggie@simpson.com",
+    "password": "secret"
+  },
+  "newComment": {
+    "content": "newComment",
+    "date": "2016-11-08T17:55:12.000Z"
+  }
+}

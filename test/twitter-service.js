@@ -21,8 +21,8 @@ class TwitterService {
     return this.httpService.get('/api/users/' + id + '/tweets');
   }
 
-  createTweet(newTweet) {
-    return this.httpService.post('/api/tweets', newTweet);
+  createTweet(id, newTweet) {
+    return this.httpService.post('/api/users/' + id + '/tweets', newTweet);
   }
 
   deleteAllTweets() {
@@ -57,8 +57,8 @@ class TwitterService {
     return this.httpService.delete('/api/users');
   }
 
-  createComment(id, donation) {
-    return this.httpService.post('/api/tweets/' + id + '/comments', donation);
+  createComment(uid, tid, comment) {
+    return this.httpService.post('/api/users/' + uid + '/tweets/' + tid + '/comments', comment);
   }
 
   getCommentsByUser(id) {
@@ -103,4 +103,4 @@ class TwitterService {
 
 }
 
-module.exports = DonationService;
+module.exports = TwitterService;
