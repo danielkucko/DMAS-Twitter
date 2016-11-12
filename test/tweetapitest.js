@@ -10,19 +10,18 @@ suite('User API tests', function () {
   let newUser = fixtures.newUser;
   let newTweet = fixtures.newTweet;
   let tweets = fixtures.tweets;
+  let users = fixtures.users;
 
   const twitterService = new TwitterService(fixtures.twitterService);
 
   beforeEach(function () {
-    //donationService.login(users[0]);
-    twitterService.deleteAllUsers();
+    twitterService.login(users[0]);
     twitterService.deleteAllTweets();
   });
 
   afterEach(function () {
-    twitterService.deleteAllUsers();
     twitterService.deleteAllTweets();
-    //donationService.logout();
+    twitterService.logout();
   });
 
   test('create a tweet', function () {

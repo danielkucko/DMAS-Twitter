@@ -4,6 +4,11 @@ const Tweet = require('../models/tweet');
 const Boom = require('boom');
 
 exports.find = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     Tweet.find({}).populate('author').populate('comments').then(tweets => {
       reply(tweets);
@@ -14,6 +19,11 @@ exports.find = {
 };
 
 exports.findOne = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     Tweet.findOne({_id: request.params.id}).then(tweet => {
       if (tweet != null) {
@@ -28,6 +38,11 @@ exports.findOne = {
 };
 
 exports.findByUser = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     Tweet.find({author: request.params.id}).then(tweets => {
       reply(tweets);
@@ -38,6 +53,11 @@ exports.findByUser = {
 };
 
 exports.create = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     const tweet = new Tweet(request.payload);
     tweet.author = request.params.id;
@@ -50,6 +70,11 @@ exports.create = {
 };
 
 exports.deleteAll = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     Tweet.remove({}).then(tweets => {
       reply().code(204);
@@ -60,6 +85,11 @@ exports.deleteAll = {
 };
 
 exports.deleteOne = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     Tweet.remove({_id: request.params.id}).then(tweet => {
       reply(tweet).code(204);
@@ -70,6 +100,11 @@ exports.deleteOne = {
 };
 
 exports.deleteByUser = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
   handler: function (request, reply) {
     Tweet.remove({author: request.params.id}).then(tweets => {
       reply().code(204);
@@ -77,4 +112,4 @@ exports.deleteByUser = {
       reply(Boom.badImplementation('Error removing tweets.'));
     })
   }
-}
+};

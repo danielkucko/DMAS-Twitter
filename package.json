@@ -12,6 +12,8 @@
   "dependencies": {
     "boom": "^4.2.0",
     "hapi": "^15.2.0",
+    "hapi-auth-jwt2": "^7.2.0",
+    "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.6.6",
     "mongoose-seeder": "^1.2.1"
   },

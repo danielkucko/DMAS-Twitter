@@ -10,23 +10,22 @@ suite('User API tests', function () {
   let newUser = fixtures.newUser;
   let newTweet = fixtures.newTweet;
   let newComment = fixtures.newComment;
+  let users = fixtures.users;
   let tweets = fixtures.tweets;
   let comments = fixtures.comments;
 
   const twitterService = new TwitterService(fixtures.twitterService);
 
   beforeEach(function () {
-    //donationService.login(users[0]);
-    twitterService.deleteAllUsers();
+    twitterService.login(users[0]);
     twitterService.deleteAllTweets();
     twitterService.deleteAllComments();
   });
 
   afterEach(function () {
-    twitterService.deleteAllUsers();
     twitterService.deleteAllTweets();
     twitterService.deleteAllComments();
-    //donationService.logout();
+    twitterService.logout();
   });
 
   test('create a comment', function () {
