@@ -2,6 +2,7 @@
 
 const Tweet = require('../models/tweet');
 const Boom = require('boom');
+const Utils = require('./utils');
 
 exports.find = {
 
@@ -76,11 +77,15 @@ exports.deleteAll = {
   },
 
   handler: function (request, reply) {
-    Tweet.remove({}).then(tweets => {
-      reply().code(204);
-    }).catch(err => {
-      reply.badImplementation('Error removing tweets.');
-    });
+    if (Utils.checkPermission(null, request.headers.authorization.split(' ')[1])) {
+      Tweet.remove({}).then(tweets => {
+        reply().code(204);
+      }).catch(err => {
+        reply(Boom.badImplementation('Error removing tweets.'));
+      });
+    } else {
+      reply(Boom.unauthorized('Unauthorized!'));
+    }
   },
 };
 
@@ -91,11 +96,20 @@ exports.deleteOne = {
   },
 
   handler: function (request, reply) {
-    Tweet.remove({_id: request.params.id}).then(tweet => {
-      reply(tweet).code(204);
+    Tweet.findOne({_id: request.params.id}).then(tweet => {
+      if (Utils.checkPermission(tweet.author, request.headers.authorization.split(' ')[1])) {
+        Tweet.remove({_id: request.params.id}).then(tweet => {
+          reply(tweet).code(204);
+        }).catch(err => {
+          reply(Boom.notFound('No tweet with this id was found.'));
+        });
+      } else {
+        reply(Boom.unauthorized('Unauthorized!'));
+      }
     }).catch(err => {
-      reply(Boom.notFound('No tweet with this id was found.'));
+      reply(Boom.notFound('Tweet not found!'));
     });
+
   },
 };
 
@@ -106,10 +120,15 @@ exports.deleteByUser = {
   },
 
   handler: function (request, reply) {
-    Tweet.remove({author: request.params.id}).then(tweets => {
-      reply().code(204);
-    }).catch(err => {
-      reply(Boom.badImplementation('Error removing tweets.'));
-    })
+
+    if (Utils.checkPermission(tweet.author, request.headers.authorization.split(' ')[1])) {
+      Tweet.remove({author: request.params.id}).then(tweets => {
+        reply().code(204);
+      }).catch(err => {
+        reply(Boom.badImplementation('Error removing tweets.'));
+      })
+    } else {
+      reply(Boom.unauthorized('Unauthorized!'));
+    }
   }
 };

@@ -1,6 +1,8 @@
 'use strict';
 
 const Comment = require('../models/comment');
+const Tweet = require('../models/tweet');
+const Utils = require('./utils');
 const Boom = require('boom');
 
 exports.find = {
@@ -92,11 +94,16 @@ exports.deleteAll = {
   },
 
   handler: function (request, reply) {
-    Comment.remove({}).then(comment => {
-      reply().code(204);
-    }).catch(err => {
-      reply.badImplementation('Error removing comments.');
-    });
+    if (Utils.checkPermission(null, request.headers.authorization.split(' ')[1])) {
+      Comment.remove({}).then(comment => {
+        reply().code(204);
+      }).catch(err => {
+        reply(Boom.badImplementation('Error removing comments.'));
+      });
+    } else {
+      reply(Boom.unauthorized('Unauthorized!'));
+    }
+
   },
 };
 
@@ -107,11 +114,21 @@ exports.deleteOne = {
   },
 
   handler: function (request, reply) {
-    Comment.remove({_id: request.params.id}).then(comment => {
-      reply(comment).code(204);
+    Comment.findOne({_id: request.params.id}).then(comment => {
+      if (Utils.checkPermission(comment.author, request.headers.authorization.split(' ')[1])) {
+        Comment.remove({_id: request.params.id}).then(comment => {
+          reply(comment).code(204);
+        }).catch(err => {
+          reply(Boom.notFound('No comment with this id was found.'));
+        });
+      } else {
+        reply(Boom.unauthorized('Unauthorized!'));
+      }
     }).catch(err => {
-      reply(Boom.notFound('No comment with this id was found.'));
-    });
+      reply(Boom.notFound('Comment not found!'));
+    })
+
+
   },
 };
 
@@ -122,11 +139,15 @@ exports.deleteByUser = {
   },
 
   handler: function (request, reply) {
-    Comment.remove({author: request.params.id}).then(comments => {
-      reply().code(204);
-    }).catch(err => {
-      reply(Boom.notFound('Error removing comments.'));
-    });
+    if (Utils.checkPermission(request.params.id, request.headers.authorization.split(' ')[1])) {
+      Comment.remove({author: request.params.id}).then(comments => {
+        reply().code(204);
+      }).catch(err => {
+        reply(Boom.notFound('Error removing comments.'));
+      });
+    } else {
+      reply(Boom.unauthorized('Unauthorized!'));
+    }
   },
 };
 
@@ -137,10 +158,19 @@ exports.deleteByTweet = {
   },
 
   handler: function (request, reply) {
-    Comment.remove({tweet: request.params.id}).then(comments => {
-      reply().code(204);
+    Tweet.findOne({_id: request.params.id}).then(tweet => {
+      if (Utils.checkPermission(tweet.author, request.headers.authorization.split(' ')[1])) {
+        Comment.remove({tweet: request.params.id}).then(comments => {
+          reply().code(204);
+        }).catch(err => {
+          reply(Boom.notFound('Error removing comments.'));
+        });
+      } else {
+        reply(Boom.unauthorized('Unauthorized!'));
+      }
     }).catch(err => {
-      reply(Boom.notFound('Error removing comments.'));
-    });
+      reply(Boom.notFound('Tweet not found!'))
+    })
+
   },
 };

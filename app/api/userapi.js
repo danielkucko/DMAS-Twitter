@@ -61,11 +61,15 @@ exports.deleteAll = {
   },
 
   handler: function (request, reply) {
-    User.remove({}).then(users => {
-      reply().code(204);
-    }).catch(err => {
-      reply.badImplementation('Error removing users.');
-    });
+    if (utils.checkPermission(null, request.headers.authorization.split(' ')[1])) {
+      User.remove({}).then(users => {
+        reply().code(204);
+      }).catch(err => {
+        reply(Boom.badImplementation('Error removing users.'));
+      });
+    } else {
+      reply(Boom.unauthorized('Unauthorized!'));
+    }
   },
 };
 
@@ -76,11 +80,15 @@ exports.deleteOne = {
   },
 
   handler: function (request, reply) {
-    User.remove({_id: request.params.id}).then(user => {
-      reply(user).code(204);
-    }).catch(err => {
-      reply(Boom.notFound('No user with this id was found.'));
-    });
+    if (utils.checkPermission(request.params.id, request.headers.authorization.split(' ')[1])) {
+      User.remove({_id: request.params.id}).then(user => {
+        reply(user).code(204);
+      }).catch(err => {
+        reply(Boom.notFound('No user with this id was found.'));
+      });
+    } else {
+      reply(Boom.unauthorized('Unauthorized!'));
+    }
   },
 };
 

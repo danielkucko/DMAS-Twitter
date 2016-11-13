@@ -32,3 +32,12 @@ exports.validate = function (decoded, request, callback) {
     callback(null, false);
   });
 };
+
+exports.checkPermission = function (userId, token) {
+  try {
+    var decoded = jwt.verify(token, 'supersecretpassword');
+    if (decoded.role == 'admin') {
+      return true;
+    } else return decoded.id == userId;
+  }
+};
