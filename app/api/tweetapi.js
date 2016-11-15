@@ -61,7 +61,7 @@ exports.create = {
 
   handler: function (request, reply) {
     const tweet = new Tweet(request.payload);
-    tweet.author = request.params.id;
+    tweet.author = Utils.decodeToken(request.headers.authorization.split(' ')[1]).userId;
     tweet.save().then(tweet => {
       reply(tweet).code(201);
     }).catch(err => {
@@ -121,7 +121,7 @@ exports.deleteByUser = {
 
   handler: function (request, reply) {
 
-    if (Utils.checkPermission(tweet.author, request.headers.authorization.split(' ')[1])) {
+    if (Utils.checkPermission(request.params.id, request.headers.authorization.split(' ')[1])) {
       Tweet.remove({author: request.params.id}).then(tweets => {
         reply().code(204);
       }).catch(err => {

@@ -78,7 +78,7 @@ exports.create = {
   handler: function (request, reply) {
     const comment = new Comment(request.payload);
     comment.tweet = request.params.tid;
-    comment.author = request.params.uid;
+    comment.author = Utils.decodeToken(request.headers.authorization.split(' ')[1]).userId;
     comment.save().then(comment => {
       reply(comment).code(201);
     }).catch(err => {

@@ -17,29 +17,30 @@ suite('User API tests', function () {
   const twitterService = new TwitterService(fixtures.twitterService);
 
   beforeEach(function () {
-    twitterService.login(users[0]);
+    twitterService.login(users[1]);
     twitterService.deleteAllTweets();
     twitterService.deleteAllComments();
+    twitterService.logout();
+    twitterService.login(users[0]);
   });
 
   afterEach(function () {
+    twitterService.login(users[1]);
     twitterService.deleteAllTweets();
     twitterService.deleteAllComments();
     twitterService.logout();
   });
 
   test('create a comment', function () {
-    const returnedUser = twitterService.createUser(newUser);
-    const returnedTweet = twitterService.createTweet(returnedUser._id, newTweet);
-    const returnedComment = twitterService.createComment(returnedUser._id, returnedTweet._id, newComment);
+    const returnedTweet = twitterService.createTweet(newTweet);
+    const returnedComment = twitterService.createComment(returnedTweet._id, newComment);
     assert(_.some([returnedComment], newComment), 'returnedComment must be a superset of newComment');
     assert.isDefined(returnedComment._id);
   });
 
   test('get comment', function () {
-    const returnedUser = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(returnedUser._id, newTweet);
-    const c1 = twitterService.createComment(returnedUser._id, t._id, newComment);
+    const t = twitterService.createTweet(newTweet);
+    const c1 = twitterService.createComment(t._id, newComment);
     const c2 = twitterService.getOneComment(c1._id);
     assert.deepEqual(c1, c2);
   });
@@ -52,19 +53,17 @@ suite('User API tests', function () {
   });
 
   test('delete a comment', function () {
-    const u = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(u._id, newTweet);
-    const c = twitterService.createComment(u._id, t._id, newComment);
+    const t = twitterService.createTweet(newTweet);
+    const c = twitterService.createComment(t._id, newComment);
     assert(twitterService.getOneComment(c._id) != null);
     twitterService.deleteComment(c._id);
     assert(twitterService.getOneComment(c._id) == null);
   });
 
   test('get all comments', function () {
-    const u = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(u._id, newTweet);
+    const t = twitterService.createTweet(newTweet);
     for (let c of comments) {
-      twitterService.createComment(u._id, t._id, c);
+      twitterService.createComment(t._id, c);
     }
 
     const allComments = twitterService.getComments();
@@ -78,33 +77,37 @@ suite('User API tests', function () {
 
   test('get comments by user', function () {
     const u = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(u._id, newTweet);
-    const c = twitterService.createComment(u._id, t._id, newComment);
+    twitterService.logout();
+    twitterService.login(newUser);
+    const t = twitterService.createTweet(newTweet);
+    const c = twitterService.createComment(t._id, newComment);
     const c1 = twitterService.getCommentsByUser(u._id);
+    twitterService.logout();
     assert.deepEqual(c, c1[0]);
   });
 
   test('delete comments by user', function () {
     const u = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(u._id, newTweet);
-    const c = twitterService.createComment(u._id, t._id, newComment);
+    twitterService.logout();
+    twitterService.login(newUser);
+    const t = twitterService.createTweet(newTweet);
+    const c = twitterService.createComment(t._id, newComment);
     assert(twitterService.getOneComment(c._id) != null);
     twitterService.deleteCommentsByUser(u._id);
+    twitterService.logout();
     assert(twitterService.getOneComment(c._id) == null);
   });
 
   test('get comments by tweet', function () {
-    const u = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(u._id, newTweet);
-    const c = twitterService.createComment(u._id, t._id, newComment);
+    const t = twitterService.createTweet(newTweet);
+    const c = twitterService.createComment(t._id, newComment);
     const c1 = twitterService.getCommentsByTweet(t._id);
     assert.deepEqual(c, c1[0]);
   });
 
   test('delete comments by tweet', function () {
-    const u = twitterService.createUser(newUser);
-    const t = twitterService.createTweet(u._id, newTweet);
-    const c = twitterService.createComment(u._id, t._id, newComment);
+    const t = twitterService.createTweet(newTweet);
+    const c = twitterService.createComment(t._id, newComment);
     assert(twitterService.getOneComment(c._id) != null);
     twitterService.deleteCommentsByTweet(t._id);
     assert(twitterService.getOneComment(c._id) == null);

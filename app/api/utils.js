@@ -36,8 +36,12 @@ exports.validate = function (decoded, request, callback) {
 exports.checkPermission = function (userId, token) {
   try {
     var decoded = jwt.verify(token, 'supersecretpassword');
+    console.log(decoded.id);
+    console.log(userId);
     if (decoded.role == 'admin') {
       return true;
     } else return decoded.id == userId;
+  } catch (e) {
+
   }
 };

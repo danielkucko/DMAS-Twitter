@@ -21,8 +21,8 @@ class TwitterService {
     return this.httpService.get('/api/users/' + id + '/tweets');
   }
 
-  createTweet(id, newTweet) {
-    return this.httpService.post('/api/users/' + id + '/tweets', newTweet);
+  createTweet(newTweet) {
+    return this.httpService.post('/api/tweets', newTweet);
   }
 
   deleteAllTweets() {
@@ -57,8 +57,8 @@ class TwitterService {
     return this.httpService.delete('/api/users');
   }
 
-  createComment(uid, tid, comment) {
-    return this.httpService.post('/api/users/' + uid + '/tweets/' + tid + '/comments', comment);
+  createComment(tid, comment) {
+    return this.httpService.post('/api/tweets/' + tid + '/comments', comment);
   }
 
   getCommentsByUser(id) {
