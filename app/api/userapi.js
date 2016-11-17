@@ -92,17 +92,16 @@ exports.deleteOne = {
 
   handler: function (request, reply) {
     if (utils.checkPermission(request.params.id, request.headers.authorization.split(' ')[1])) {
-      User.find({_id: request.params.id}).then(user => {
-        Comment.remove({author: user._id}).then(comments => {
-          Tweet.remove({author: user._id}).then(tweets => {
-          }).catch(reply(Boom.badImplementation('Error removing tweets.')));
-        }).catch(reply(Boom.badImplementation('Error removing comments.')));
-        User.remove({_id: request.params.id}).then(user => {
-          reply(user).code(204);
-        }).catch(err => {
-          reply(Boom.notFound('No user with this id was found.'));
-        });
-      })
+      Comment.remove({author: request.params.id}).then(comments => {
+        Tweet.remove({author: request.params.id}).then(tweets => {
+        }).catch(reply(Boom.badImplementation('Error removing tweets.')));
+      }).catch(reply(Boom.badImplementation('Error removing comments.')));
+      User.remove({_id: request.params.id}).then(user => {
+        reply(user).code(204);
+      }).catch(err => {
+        reply(Boom.notFound('No user with this id was found.'));
+      });
+
     } else {
       reply(Boom.unauthorized('Unauthorized!'));
     }
