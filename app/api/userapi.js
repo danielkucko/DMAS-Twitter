@@ -1,6 +1,8 @@
 'use strict';
 
 const User = require('../models/user');
+const Tweet = require('../models/tweet');
+const Comment = require('../models/comment');
 const Boom = require('boom');
 const utils = require('./utils.js');
 
@@ -63,6 +65,15 @@ exports.deleteAll = {
   handler: function (request, reply) {
     if (utils.checkPermission(null, request.headers.authorization.split(' ')[1])) {
       User.remove({}).then(users => {
+        Tweet.remove({}).then(tweets => {
+          Comment.remove({}).then(comments => {
+
+          }).catch(err => {
+            reply(Boom.badImplementation('Error removing Comments'))
+          });
+        }).catch(err => {
+          reply(Boom.badImplementation('Error removing Tweets'))
+        });
         reply().code(204);
       }).catch(err => {
         reply(Boom.badImplementation('Error removing users.'));
@@ -81,11 +92,17 @@ exports.deleteOne = {
 
   handler: function (request, reply) {
     if (utils.checkPermission(request.params.id, request.headers.authorization.split(' ')[1])) {
-      User.remove({_id: request.params.id}).then(user => {
-        reply(user).code(204);
-      }).catch(err => {
-        reply(Boom.notFound('No user with this id was found.'));
-      });
+      User.find({_id: request.params.id}).then(user => {
+        Comment.remove({author: user._id}).then(comments => {
+          Tweet.remove({author: user._id}).then(tweets => {
+          }).catch(reply(Boom.badImplementation('Error removing tweets.')));
+        }).catch(reply(Boom.badImplementation('Error removing comments.')));
+        User.remove({_id: request.params.id}).then(user => {
+          reply(user).code(204);
+        }).catch(err => {
+          reply(Boom.notFound('No user with this id was found.'));
+        });
+      })
     } else {
       reply(Boom.unauthorized('Unauthorized!'));
     }

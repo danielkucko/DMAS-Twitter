@@ -5,7 +5,7 @@ const TweetApi = require('./app/api/tweetapi');
 const CommentApi = require('./app/api/commentapi');
 
 module.exports = [
-  { method: 'GET', path: '/api/users', config: UserApi.find },
+  {method: 'GET', path: '/api/users', config: UserApi.find},
   {method: 'GET', path: '/api/users/{id}', config: UserApi.findOne},
   {method: 'POST', path: '/api/users', config: UserApi.create},
   {method: 'DELETE', path: '/api/users/{id}', config: UserApi.deleteOne},
@@ -14,7 +14,7 @@ module.exports = [
 
   {method: 'DELETE', path: '/api/users/{id}/tweets', config: TweetApi.deleteByUser},
   {method: 'GET', path: '/api/users/{id}/tweets', config: TweetApi.findByUser},
-  { method: 'GET', path: '/api/tweets', config: TweetApi.find },
+  {method: 'GET', path: '/api/tweets', config: TweetApi.find},
   {method: 'GET', path: '/api/tweets/{id}', config: TweetApi.findOne},
   {method: 'POST', path: '/api/tweets', config: TweetApi.create},
   {method: 'DELETE', path: '/api/tweets/{id}', config: TweetApi.deleteOne},
