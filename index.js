@@ -4,11 +4,11 @@ const Hapi = require('hapi');
 const utils = require('./app/api/utils.js');
 
 var server = new Hapi.Server();
-server.connection({ port: process.env.PORT || 4000 });
+server.connection({port: process.env.PORT || 4000});
 
 require('./app/models/db');
 
-server.register([require('hapi-auth-jwt2'), require('inert'), require('vision')], err => {
+server.register([require('hapi-auth-jwt2'), require('hapi-auth-cookie'), require('inert'), require('vision')], err => {
 
   if (err) {
     throw err;
@@ -26,25 +26,34 @@ server.register([require('hapi-auth-jwt2'), require('inert'), require('vision')]
     isCached: false,
   });
 
-});
+  server.auth.strategy('standard', 'cookie', {
+    password: 'supersecretpassword',
+    cookie: 'donation-cookie',
+    isSecure: false,
+    ttl: 24 * 60 * 60 * 1000,
+    redirectTo: '/login',
+  });
 
-server.auth.strategy('jwt', 'jwt', {
-  key: 'supersecretpassword',
-  validateFunc: utils.validate,
-  verifyOptions: {algorithms: ['HS256']},
-});
+  server.auth.strategy('jwt', 'jwt', {
+    key: 'supersecretpassword',
+    validateFunc: utils.validate,
+    verifyOptions: {algorithms: ['HS256']},
+  });
 
-server.auth.default({
-  strategy: 'jwt',
-});
+  server.auth.default({
+    strategy: 'standard',
+  });
 
-// server.route(require('./routes'));
-server.route(require('./apiroutes'));
+  server.route(require('./routes'));
+  server.route(require('./apiroutes'));
 
-server.start(err => {
-  if (err) {
-    throw err;
-  }
+  server.start(err => {
+    if (err) {
+      throw err;
+    }
 
-  console.log('Server listening at: ', server.info.uri);
+    console.log('Server listening at: ', server.info.uri);
+
+  });
+
 });

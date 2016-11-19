@@ -81,11 +81,7 @@ exports.deleteAll = {
   handler: function (request, reply) {
     if (Utils.checkPermission(null, request.headers.authorization.split(' ')[1])) {
       Tweet.remove({}).then(tweets => {
-        Comment.remove({}).then(comments => {
-          reply().code(204);
-        }).catch(err => {
-          reply(Boom.badImplementation('Error removing comments.'));
-        })
+        reply().code(204);
       }).catch(err => {
         reply(Boom.badImplementation('Error removing tweets.'));
       });
@@ -105,11 +101,7 @@ exports.deleteOne = {
     Tweet.findOne({_id: request.params.id}).then(tweet => {
       if (Utils.checkPermission(tweet.author, request.headers.authorization.split(' ')[1])) {
         Tweet.remove({_id: request.params.id}).then(tweet => {
-          Comment.remove({tweet: request.params.id}).then(comments => {
-            reply(tweet).code(204);
-          }).catch(err => {
-            reply(Boom.badImplementation('Error removing comments'));
-          })
+          reply().code(204);
         }).catch(err => {
           reply(Boom.notFound('No tweet with this id was found.'));
         });
@@ -132,19 +124,11 @@ exports.deleteByUser = {
   handler: function (request, reply) {
 
     if (Utils.checkPermission(request.params.id, request.headers.authorization.split(' ')[1])) {
-      Tweet.find({author: request.params.id}).then(tweets => {
-        Tweet.remove({author: request.params.id}).then(t => {
-          for (let tweet of tweets) {
-            Comment.remove({tweet: tweet._id}).then().catch(err => {
-              reply(Boom.notFound('Tweet not found!'));
-            });
-          }
-          reply().code(204);
-        }).catch(err => {
-          reply(Boom.badImplementation('Error removing tweets.'));
-        })
+      Tweet.remove({author: request.params.id}).then(t => {
+        reply().code(204);
+      }).catch(err => {
+        reply(Boom.badImplementation('Error removing tweets.'));
       });
-
     } else {
       reply(Boom.unauthorized('Unauthorized!'));
     }

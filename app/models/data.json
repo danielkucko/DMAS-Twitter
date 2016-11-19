@@ -6,21 +6,24 @@
       "lastName": "Simpson",
       "email": "homer@simpson.com",
       "password": "secret",
-      "role": "user"
+      "role": "user",
+      "joined": 1478237412000
     },
     "second": {
       "firstName": "Marge",
       "lastName": "Simpson",
       "email": "marge@simpson.com",
       "password": "secret",
-      "role": "admin"
+      "role": "admin",
+      "joined": 1478237412000
     },
     "third": {
       "firstName": "Bart",
       "lastName": "Simpson",
       "email": "bart@simpson.com",
       "password": "secret",
-      "role": "user"
+      "role": "user",
+      "joined": 1478237412000
     }
   },
   "tweets": {
