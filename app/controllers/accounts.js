@@ -54,7 +54,7 @@ exports.authenticate = {
           loggedIn: true,
           loggedInUser: user.email,
         });
-        reply.redirect('/home');
+        reply.redirect('/tweets');
       } else {
         reply.view('login', {
           errors: [

@@ -1,0 +1,15 @@
+<nav class="ui inverted menu">
+  <header class="header item"> Admin Panel</header>
+  <div class="left menu">
+    <a id="tweets" class="item" href="/tweets"> Tweets </a>
+    <a id="users" class="item" href="/users"> Users </a>
+    <a id="comments" class="item" href="/comments"> Comments </a>
+  </div>
+  <div class="right menu">
+    <a id="logout" class="item" href="/logout"> Logout</a>
+  </div>
+</nav>
+
+<script>
+  $("#{{_id}}").addClass("active item");
+</script>

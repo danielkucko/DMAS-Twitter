@@ -11,7 +11,7 @@ exports.home = {
 
     reply.view('userhome', {
       title: "User administration", users: function () {
-        User.find({}).sort([['joined', 'descending']]).limit(3).then(users => {
+        User.find({}).sort([['joined', 'descending']]).then(users => {
           return users;
         })
       },

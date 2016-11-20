@@ -1,0 +1,21 @@
+<div class="ui card">
+  <div class="content">
+    <a class="header">{{author.firstName}} {{author.lastName}}</a>
+    <div class="left floated meta date">{{formatRelative date}}</div>
+    <div class="description">
+      {{content}}
+    </div>
+  </div>
+  <div class="extra content">
+    <div class="left floated">
+      <form action="/tweets/delete" method="POST">
+        <input type="hidden" name="id" value={{_id}}>
+        <button class="ui icon submit button">
+          <i class="delete icon"></i>
+          Delete
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>

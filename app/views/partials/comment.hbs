@@ -1,0 +1,18 @@
+<div class="ui card">
+  <div class="content">
+    <a class="header">{{author.firstName}} {{author.lastName}}</a>
+    <div class="left floated meta date">{{formatRelative date}}</div>
+    <div class="description">
+      {{content}}
+    </div>
+  </div>
+  <div class="extra content">
+    <form action="/comment/delete" method="POST">
+      <input type="hidden" name="id" value={{_id}}>
+      <button class="ui icon submit button">
+        <i class="delete icon"></i>
+      </button>
+    </form>
+  </div>
+
+</div>

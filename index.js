@@ -2,6 +2,8 @@
 
 const Hapi = require('hapi');
 const utils = require('./app/api/utils.js');
+const Handlebars = require('handlebars');
+const HandlebarsIntl = require('handlebars-intl');
 
 var server = new Hapi.Server();
 server.connection({port: process.env.PORT || 4000});
@@ -14,9 +16,11 @@ server.register([require('hapi-auth-jwt2'), require('hapi-auth-cookie'), require
     throw err;
   }
 
+  HandlebarsIntl.registerWith(Handlebars);
+
   server.views({
     engines: {
-      hbs: require('handlebars'),
+      hbs: Handlebars,
     },
     relativeTo: __dirname,
     path: './app/views',
@@ -27,7 +31,7 @@ server.register([require('hapi-auth-jwt2'), require('hapi-auth-cookie'), require
   });
 
   server.auth.strategy('standard', 'cookie', {
-    password: 'supersecretpassword',
+    password: 'supersecretpasswordnotrevealedtoanyonewhatsoever',
     cookie: 'donation-cookie',
     isSecure: false,
     ttl: 24 * 60 * 60 * 1000,
