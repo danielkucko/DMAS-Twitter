@@ -1,0 +1,21 @@
+{{> mainmenu }}
+
+<div>
+  {{#if comments}}
+    <form method="POST" action="/comments/deleteAll">
+      <button class="ui icon submit button">
+        <i class="delete icon"></i>
+        Delete all Comments
+      </button>
+    </form>
+    <div class="ui cards">
+      {{#each comments}}
+        {{> comment}}
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="message">
+      Nothing to show here.
+    </div>
+  {{/if}}
+</div>

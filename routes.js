@@ -19,6 +19,7 @@ module.exports = [
   {method: 'POST', path: '/tweets/deleteComments', config: Tweets.deleteComments},
 
   {method: 'GET', path: '/users', config: Users.home},
+  {method: 'POST', path: '/users/detail', config: Users.detail},
   {method: 'POST', path: '/users/search', config: Users.search},
   {method: 'POST', path: '/users/delete', config: Users.deleteOne},
   {method: 'POST', path: '/users/deleteTweets', config: Users.deleteTweets},

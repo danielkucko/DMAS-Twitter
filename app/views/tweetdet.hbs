@@ -1,18 +1,22 @@
 {{> mainmenu}}
 
 <div class="ui grid">
-  <div class="seven wide column">
+  <div class="four wide column">
     {{> tweetdetailpartial tweet}}
   </div>
-  <div class="two wide column">
+  <div class="four wide column">
+    {{#if cnts}}
     <form action="/tweets/deleteComments" method="POST">
       <input type="hidden" name="id" value={{tweet._id}}>
       <button class="ui submit button">
         Delete All Comments
       </button>
     </form>
+    {{/if}}
   </div>
-  <div class="seven wide column">
+  <div class="four wide column">
+  </div>
+  <div class="four wide column">
     <div class="ui list">
       {{#each cmts}}
         <div class="item">

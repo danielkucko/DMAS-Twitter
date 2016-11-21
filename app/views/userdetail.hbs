@@ -1,0 +1,44 @@
+{{> mainmenu }}
+
+<div class="ui grid">
+  <div class="four wide column">
+    {{> userdetailpartial user}}
+  </div>
+  <div class="four wide column">
+    {{#if tweets}}
+      <form action="/users/deleteTweets" method="POST">
+        <input type="hidden" name="id" value={{user._id}}>
+        <button class="ui submit button">
+          Delete All Tweets
+        </button>
+      </form>
+    {{/if}}
+    <br>
+    {{#if comments}}
+      <form action="/users/deleteComments" method="POST">
+        <input type="hidden" name="id" value="{{user._id}}">
+        <button class="ui submit button">
+          Delete All Comments
+        </button>
+      </form>
+    {{/if}}
+  </div>
+  <div class="four wide column">
+    <div class="ui list">
+      {{#each tweets}}
+        <div class="item">
+          {{> tweet }}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+  <div class="four wide column">
+    <div class="ui list">
+      {{#each comments}}
+        <div class="item">
+          {{> comment }}
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

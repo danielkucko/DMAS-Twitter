@@ -37,8 +37,8 @@ exports.search = {
 exports.deleteOne = {
 
   handler: function (request, reply) {
-    Comment.remove({_id: request.payload}).then(comment => {
-      reply.redirect('/tweets/home')
+    Comment.remove({_id: request.payload.id}).then(comment => {
+      reply.redirect('/comments')
     })
   }
 };
@@ -46,7 +46,7 @@ exports.deleteOne = {
 exports.deleteAll = {
   handler: function (request, reply) {
     Comment.remove({}).then(comments => {
-      reply.redirect('/tweets/home')
+      reply.redirect('/comments')
     })
   }
 };

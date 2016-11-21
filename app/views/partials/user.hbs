@@ -1,0 +1,28 @@
+<div class="ui card">
+  <div class="content">
+    <a class="header">{{firstName}} {{lastName}}</a>
+    <div class="left floated meta date">joined {{formatRelative joined}}</div>
+    <div class="description">
+      {{email}}
+    </div>
+  </div>
+  <div class="extra content">
+    <div class="left floated">
+      <form action="/users/delete" method="POST">
+        <input type="hidden" name="id" value={{_id}}>
+        <button class="ui icon submit button">
+          <i class="delete icon"></i>
+        </button>
+      </form>
+    </div>
+    <div class="right floated">
+      <form action="/users/detail" method="POST">
+        <input type="hidden" name="id" value={{_id}}>
+        <button class="ui submit button">
+          Details
+          <i class="chevron right icon"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
