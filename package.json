@@ -15,6 +15,7 @@
     "hapi": "^15.2.0",
     "hapi-auth-cookie": "^6.1.1",
     "hapi-auth-jwt2": "^7.2.0",
+    "hapi-cors-headers": "^1.0.0",
     "inert": "^4.0.2",
     "joi": "^10.0.0",
     "jsonwebtoken": "^7.1.9",

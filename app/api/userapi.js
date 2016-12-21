@@ -42,9 +42,7 @@ exports.findOne = {
 
 exports.create = {
 
-  auth: {
-    strategy: 'jwt',
-  },
+  auth: false,
 
   handler: function (request, reply) {
     const user = new User(request.payload);

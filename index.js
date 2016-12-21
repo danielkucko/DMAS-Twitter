@@ -4,6 +4,7 @@ const Hapi = require('hapi');
 const utils = require('./app/api/utils.js');
 const Handlebars = require('handlebars');
 const HandlebarsIntl = require('handlebars-intl');
+const corsHeaders = require('hapi-cors-headers');
 
 var server = new Hapi.Server();
 server.connection({port: process.env.PORT || 4000});
@@ -48,6 +49,7 @@ server.register([require('hapi-auth-jwt2'), require('hapi-auth-cookie'), require
     strategy: 'standard',
   });
 
+  server.ext('onPreResponse', corsHeaders);
   server.route(require('./routes'));
   server.route(require('./apiroutes'));
 
