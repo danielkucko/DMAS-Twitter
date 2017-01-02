@@ -21,6 +21,28 @@ exports.find = {
   },
 };
 
+exports.getLoggedInUser = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    let user = utils.decodeToken(request.headers.authorization.split(' ')[1]);
+    User.findOne({_id: user.userId}).then(user => {
+      if (user != null) {
+        reply(user);
+      } else {
+        reply(Boom.notFound('No user with this id.'));
+      }
+    }).catch(err => {
+      reply(Boom.notFound('No user with this id was found.'));
+    })
+  }
+
+};
+
+
 exports.findOne = {
 
   auth: {
@@ -38,6 +60,31 @@ exports.findOne = {
       reply(Boom.notFound('No user with this id was found.'));
     });
   },
+};
+
+exports.update = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    let update = request.payload;
+    User.findById(update._id).then(user => {
+      user.firstName = update.firstName;
+      user.lastName = update.lastName;
+      user.password = update.password;
+      user.email = update.email;
+      user.save().then(user => {
+        reply(user).code(201);
+      }).catch(err => {
+        reply(Boom.badImplementation('Error creating user.'));
+      });
+    }).catch(err => {
+      reply(Boom.notFound('No user with this id was found.'))
+    })
+  }
+
 };
 
 exports.create = {
