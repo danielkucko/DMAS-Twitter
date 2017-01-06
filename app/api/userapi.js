@@ -21,6 +21,26 @@ exports.find = {
   },
 };
 
+exports.search = {
+
+  auth: {
+    strategy: 'jwt',
+  },
+
+  handler: function (request, reply) {
+    User.find({
+      $or: [{firstName: new RegExp('^' + request.payload + '$', 'i')},
+        {lastName: new RegExp('^' + request.payload + '$', i)}]
+    }).then(
+        users => {
+          reply(users);
+        }).catch(err => {
+      reply(Boom.notFound('Your search did not find any results'));
+    })
+  }
+
+};
+
 exports.getLoggedInUser = {
 
   auth: {
