@@ -65,7 +65,9 @@ exports.create = {
     const tweet = new Tweet(request.payload);
     tweet.author = Utils.decodeToken(request.headers.authorization.split(' ')[1]).userId;
     tweet.save().then(tweet => {
-      reply(tweet).code(201);
+      Tweet.findOne({_id: tweet._id}).populate('author').then(retTweet => {
+        reply(retTweet).code(201);
+      });
     }).catch(err => {
       reply(Boom.badImplementation('Error creating tweet.'));
     });
