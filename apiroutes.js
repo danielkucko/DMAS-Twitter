@@ -8,6 +8,7 @@ module.exports = [
   {method: 'GET', path: '/api/users', config: UserApi.find},
   {method: 'GET', path: '/api/users/{id}', config: UserApi.findOne},
   {method: 'GET', path: '/api/loggedInUser', config: UserApi.getLoggedInUser},
+  {method: 'POST', path: '/api/users/search', config: UserApi.search},
   {method: 'POST', path: '/api/users/update', config: UserApi.update},
   {method: 'POST', path: '/api/users', config: UserApi.create},
   {method: 'DELETE', path: '/api/users/{id}', config: UserApi.deleteOne},
