@@ -30,7 +30,7 @@ exports.search = {
   handler: function (request, reply) {
     User.find({
       $or: [{firstName: new RegExp('^' + request.payload + '$', 'i')},
-        {lastName: new RegExp('^' + request.payload + '$', i)}]
+        {lastName: new RegExp('^' + request.payload + '$', 'i')}]
     }).then(
         users => {
           reply(users);
