@@ -13,7 +13,7 @@ exports.find = {
   },
 
   handler: function (request, reply) {
-    Tweet.find({}).populate('author').populate('comments').then(tweets => {
+    Tweet.find({}).sort('-date').populate('author').populate('comments').then(tweets => {
       reply(tweets);
     }).catch(err => {
       reply(Boom.badImplementation('Error connecting to database'));
@@ -47,7 +47,7 @@ exports.findByUser = {
   },
 
   handler: function (request, reply) {
-    Tweet.find({author: request.params.id}).then(tweets => {
+    Tweet.find({author: request.params.id}).sort('-date').populate('author').then(tweets => {
       reply(tweets);
     }).catch(err => {
       reply(Boom.badImplementation('Error accessing the database'));
@@ -64,8 +64,8 @@ exports.create = {
   handler: function (request, reply) {
     const tweet = new Tweet(request.payload);
     tweet.author = Utils.decodeToken(request.headers.authorization.split(' ')[1]).userId;
-    tweet.save().then(tweet => {
-      Tweet.findOne({_id: tweet._id}).populate('author').then(retTweet => {
+    tweet.save().then(t => {
+      Tweet.findOne({_id: t._id}).populate('author').then(retTweet => {
         reply(retTweet).code(201);
       });
     }).catch(err => {
