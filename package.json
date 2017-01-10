@@ -13,6 +13,7 @@
     "boom": "^4.2.0",
     "gulp": "^3.9.1",
     "handlebars-intl": "^1.1.2",
+    "handlebars": "^4.0.5",
     "hapi": "^15.2.0",
     "hapi-auth-cookie": "^6.1.1",
     "hapi-auth-jwt2": "^7.2.0",
